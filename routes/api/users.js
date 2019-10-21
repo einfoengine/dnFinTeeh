@@ -3,11 +3,11 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 
 
-router.get('/', (req, res)=>{
+router.get('/test', (req, res)=>{
     res.send('I am called at users');
 });
 
-router.post('/post', [
+router.post('/', [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'please enter the right password with 6 or more char').isLength({min:6}),
@@ -20,7 +20,7 @@ router.post('/post', [
             errors:errors.array()
         });
     }
-    res.send('User route');
+    res.send('Registration successful');
 });
 
 module.exports = router;

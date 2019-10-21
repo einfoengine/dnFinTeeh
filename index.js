@@ -9,6 +9,7 @@ connectMG();
 connectSeq();
 
 // Init middleware
+// This allow us the get the data in request.body
 app.use(express.json({
     extended: false,
 }));
