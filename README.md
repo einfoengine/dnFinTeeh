@@ -33,3 +33,7 @@
 1. Create schema
 1. Assign mongoos model
 1. Export mongoose model
+
+--
+## Work flow
+1. Prepare env 
