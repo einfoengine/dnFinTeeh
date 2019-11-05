@@ -21,6 +21,26 @@ class Requests {
       console.log('Post error: ', err);
     }
   };
+  delete = async (endPoint, params) => {
+    console.log('Path: ', endPoint, '\n', 'Params: ', params);
+    try {
+      const response = await axios.delete(endPoint, params); // params to be an object
+      console.log('Delete response: ', response);
+    } catch (err) {
+      console.log('Delete error: ', err);
+    }
+  };
+  put = async (endPoint, params) => {
+    console.log('Update Request');
+    console.log('Method: Put');
+    console.log('Path: ', endPoint, '\n', 'Params: ', params);
+    try {
+      const response = await axios.put(endPoint, params); // params to be an object
+      console.log('Update response: ', response);
+    } catch (err) {
+      console.log('Update error: ', err);
+    }
+  };
 }
 
 export default Requests = new Requests();

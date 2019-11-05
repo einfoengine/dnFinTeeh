@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import Requests from '../utils/request';
+import Requests from '../../utils/request';
 import { Button, Card, Divider, Form, Input, Modal, Table } from 'antd';
 
 class Project extends Component {
@@ -29,14 +29,9 @@ class Project extends Component {
       render: x => <a>{x}</a>,
     },
     {
-      title: 'Client',
+      title: 'Email',
       dataIndex: 'email',
       key: 'email',
-    },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
     },
     {
       title: 'Action',
@@ -150,7 +145,7 @@ class Project extends Component {
       <PageHeaderWrapper>
         <Card>
           <Button type="primary" onClick={this.showModal}>
-            Create Project
+            Create User
           </Button>
         </Card>
         <Card>
