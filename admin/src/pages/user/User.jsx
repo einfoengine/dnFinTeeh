@@ -199,14 +199,14 @@ class User extends Component {
             onCancel={this.handleCancelEM}
           >
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-              <Form.Item label="Present Email">
+              {/* <Form.Item label="Present Email">
                 <Input
                   onChange={e => {
                     let imput = this.state.editData;
                     this.setState({ editData: { ...imput, presentEmail: e.target.value } });
                   }}
                 />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Name">
                 <Input
                   onChange={e => {

@@ -17,7 +17,7 @@ class Project extends Component {
       paid: '',
     },
     editData: {
-      oldName: '',
+      id: '',
       name: '',
       client: '',
       amount: 0,
@@ -53,9 +53,9 @@ class Project extends Component {
         <span>
           {/* <a onClick={this.showModalEM}>edit</a> */}
           <a onClick={(e)=>{
+            let editData = this.state.editData;
+            this.setState({ editData: { ...editData, id: record._id }});
             this.showModalEM();
-            console.log("edit", record);
-            console.log('Edit',this.state.record);
             this.setState({record});
           }}>Edit</a>
             <Divider type="vertical"/>
@@ -220,14 +220,6 @@ class Project extends Component {
           >
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
               <Form.Item label="Project Name">
-                <Input
-                  onChange={e => {
-                    let imput = this.state.editData;
-                    this.setState({ editData: { ...imput, oldName: e.target.value }});
-                  }}
-                />
-              </Form.Item>
-              <Form.Item label="New Name">
                 <Input
                   onChange={e => {
                     let imput = this.state.editData;

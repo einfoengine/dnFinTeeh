@@ -45,10 +45,10 @@ router.post('/', async (req, res)=>{
     // }
 });
 router.put('/', async (req, res)=>{
-    // console.log('Project edit request', req.body);
-    const {oldName, name, client, amount, paid} = req.body;
-    project = await ProjectModel.findOne({name:oldName});
-    console.log('Project edit request', project);
+    const {id, name, client, amount, paid} = req.body;
+    console.log('Project edit request', id);
+    project = await ProjectModel.findOne({_id:id});
+    // console.log('Project edit request', project);
     if("name" in project){
         project.name = name;
         project.client = client;
@@ -56,8 +56,8 @@ router.put('/', async (req, res)=>{
         project.paid = paid;
         p = await project.save();
     }
-    res.send('Project edit request', project);
-    // res.send(project);
+    res.send(project);
+    // res.send(req.body);
 });
 
 router.delete('/', async (req, res)=>{
