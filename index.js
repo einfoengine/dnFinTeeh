@@ -22,10 +22,12 @@ app.get('/', (req, res)=>{
     res.sendFile('./index.html');
 });
 
-// Define routes
+// Define routes routes for 
 app.use('/api/users', require('./routes/api/users')); // Create new user
 app.use('/api/auth', require('./routes/api/auth')); // Authenticate an user
 app.use('/api/userlist', require('./routes/api/user_list'))
+
+app.use('/api/projects', require('./routes/api/projects'))
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, ()=>{

@@ -1,27 +1,26 @@
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose');
 
-const ProjectSchema = Sequelize.define('projects',{
-    projectName: {
-        type: Sequelize.STRING,
-        allowNull: false // required true
+const ProjectSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    projectOwner: {
-        type: Sequelize.STRING,
-        allowNull: false // required true
+    client: {
+        type: String,
+        require: true,
     },
-    manager: {
-        type: Sequelize.STRING,
-        allowNull: false // required true
+    amount: {
+        type: Number,
+        required: true, 
     },
-    involved: {
-        type: Sequelize.STRING
+    paid: {
+        type: Number, 
+        required: true,
     },
-    downPaymen: {
-        type: Sequelize.STRING,
-        allowNull: false // required true
-    },
-    deadline: {
-        type: Sequelize.STRING,
-        allowNull: false // required true
-    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
 });
+
+module.exports = Projects = mongoose.model('project', ProjectSchema);

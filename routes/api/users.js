@@ -8,7 +8,6 @@ const { check, validationResult } = require('express-validator');
 
 const UserModel = require('../../models/Users');
 
-
 router.get('/test', (req, res)=>{
     res.send('I am called at users');
 });
@@ -70,38 +69,23 @@ router.post('/', [
 });
 
 router.put('/', async (req, res)=>{
-    const {name, email, pass} = req.body;
-
-    let user = {};
-    user = await UserModel.findOne({email:email});
-    console.log("found user",user);
-    let p = {msg:"I am empty"};
-    console.log("user.hasOwnProperty('email')",user.hasOwnProperty("email"),' user.email ',user.email)
+    const {presentEmail, name, email, pass} = req.body;
+    user = await UserModel.findOne({email:presentEmail});
     if("email" in user){
         user.email = email;
         user.name = name;
         user.pass = pass;
         p = await user.save();
-        console.log('===========p========',p);
-    }else{
-        console.log("userrrrrr",user)
     }
-
-    res.send(p);
-    
-
-    // // console.log(email)
-    // try{
-    //     UserModel.findOneAndUpdate({email}, req.body, {upsert:true}, function(err, doc){
-    //         if (err) return res.send(500, { error: err });
-    //         return res.send("succesfully saved");
-    //     });
-    // }catch(err){
-
-    // }
+    res.send(user);
 });
+
 router.delete('/', async (req, res)=>{
-
+    await UserModel.deleteOne({ email: req.body.email}, function (err) {
+        if (err) return handleError(err);
+    });
+    res.send("Successfully Deleted!");
 });
+
 
 module.exports = router;

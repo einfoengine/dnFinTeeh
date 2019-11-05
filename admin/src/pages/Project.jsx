@@ -12,8 +12,9 @@ class Project extends Component {
     data: [],
     formdata: {
       name: '',
-      email: '',
-      pass: '',
+      client: '',
+      amount: '',
+      paid: '',
     },
     record: {},
     visible: false,
@@ -30,8 +31,8 @@ class Project extends Component {
     },
     {
       title: 'Client',
-      dataIndex: 'email',
-      key: 'email',
+      dataIndex: 'client',
+      key: 'client',
     },
     {
       title: 'Amount',
@@ -65,8 +66,8 @@ class Project extends Component {
   };
 
   handleOkD = async e => {
-    console.log(this.state.record.email);
-    await Requests.delete('http://localhost:5000/api/users/', {"email": this.state.record.email});
+    console.log('Deleting project', this.state.record.name)
+    await Requests.delete('http://localhost:5000/api/projects/', {data: {"name": this.state.record.name}});
     this.setState({
       visibleD: false,
     });
@@ -87,7 +88,7 @@ class Project extends Component {
 
   handleOkEM = async e => {
     console.log(this.state);
-    await Requests.post('http://localhost:5000/api/users/', this.state.formdata);
+    await Requests.post('http://localhost:5000/api/projects', this.state.formdata);
     this.setState({
       visibleEM: false,
     });
@@ -109,7 +110,7 @@ class Project extends Component {
 
   handleOk = async e => {
     console.log(this.state);
-    await Requests.post('http://localhost:5000/api/users/', this.state.formdata);
+    await Requests.post('http://localhost:5000/api/projects', this.state.formdata);
     this.setState({
       visible: false,
     });
@@ -129,9 +130,9 @@ class Project extends Component {
 
   // Life cycle
   async componentWillMount() {
-    const res = await Requests.get('http://localhost:5000/api/userlist');
+    const res = await Requests.get('http://localhost:5000/api/projects');
     console.log('res', res);
-    this.setState({ data: res.data.user });
+    this.setState({ data: res.data.project });
   }
   componentDidMount() {}
   render() {
@@ -158,7 +159,7 @@ class Project extends Component {
         </Card>
         <div>
           <Modal
-            title="Basic Modal"
+            title="Create Project"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -172,19 +173,27 @@ class Project extends Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="E-mail">
+              <Form.Item label="Client">
                 <Input
                   onChange={e => {
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, email: e.target.value } });
+                    this.setState({ formdata: { ...imput, client: e.target.value } });
                   }}
                 />
               </Form.Item>
-              <Form.Item label="Password">
+              <Form.Item label="Amount">
                 <Input
                   onChange={e => {
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, pass: e.target.value } });
+                    this.setState({ formdata: { ...imput, amount: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Paid">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.formdata;
+                    this.setState({ formdata: { ...imput, paid: e.target.value } });
                   }}
                 />
               </Form.Item>
@@ -192,9 +201,9 @@ class Project extends Component {
           </Modal>
         </div>
         {/* Edit modal */}
-        <div id="edit-user">
+        <div id="edit-project">
           <Modal
-            title="Edit User"
+            title="Edit Project"
             visible={this.state.visibleEM}
             onOk={this.handleOkEM}
             onCancel={this.handleCancelEM}
@@ -203,14 +212,14 @@ class Project extends Component {
           </Modal>
         </div>
         {/* Delete modal */}
-        <div id="delete-user">
+        <div id="delete-project">
           <Modal
-            title="Delete User"
+            title="Delete Project"
             visible={this.state.visibleD}
             onOk={this.handleOkD}
             onCancel={this.handleCancelD}
           >
-            You are going to delete an user! Are you sure?
+            You are about to delete a Project! Are you sure?
           </Modal>
         </div>
       </PageHeaderWrapper>
