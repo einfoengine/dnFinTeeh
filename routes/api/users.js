@@ -12,6 +12,18 @@ router.get('/test', (req, res)=>{
     res.send('I am called at users');
 });
 
+router.get('/', async (req, res)=>{
+    try{
+        const user = await userModel.find();
+        console.log('User data log\n',{user});
+        res.json({user})
+    }catch(err){
+        res.json('User list error',err.message);
+        res.status(500).send('Server error! User list not fiund!')
+    }
+});
+
+
 router.post('/', [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
@@ -69,6 +81,8 @@ router.post('/', [
 });
 
 router.put('/', async (req, res)=>{
+    // console.log('amar data',req.body);
+    // res.send('amar data',req.body);
     const {presentEmail, name, email, pass} = req.body;
     user = await UserModel.findOne({email:presentEmail});
     if("email" in user){

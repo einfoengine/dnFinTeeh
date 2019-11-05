@@ -16,6 +16,13 @@ class Project extends Component {
       amount: '',
       paid: '',
     },
+    editData: {
+      oldName: '',
+      name: '',
+      client: '',
+      amount: 0,
+      paid: 0,
+    },
     record: {},
     visible: false,
     visibleEM: false,
@@ -44,7 +51,13 @@ class Project extends Component {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a onClick={this.showModalEM}>edit</a>
+          {/* <a onClick={this.showModalEM}>edit</a> */}
+          <a onClick={(e)=>{
+            this.showModalEM();
+            console.log("edit", record);
+            console.log('Edit',this.state.record);
+            this.setState({record});
+          }}>Edit</a>
             <Divider type="vertical"/>
           <a onClick={(e)=>{
             this.showModalD();
@@ -87,11 +100,8 @@ class Project extends Component {
   };
 
   handleOkEM = async e => {
-    console.log(this.state);
-    await Requests.post('http://localhost:5000/api/projects', this.state.formdata);
-    this.setState({
-      visibleEM: false,
-    });
+    this.setState({visibleEM: false});
+    await Requests.put('http://localhost:5000/api/projects/', this.state.editData);
   };
 
   handleCancelEM = e => {
@@ -146,7 +156,7 @@ class Project extends Component {
         sm: { span: 20 },
       },
     };
-    console.log('Form data', this.state.formdata);
+    console.log('Edit data', this.state.editData);
     return (
       <PageHeaderWrapper>
         <Card>
@@ -208,7 +218,48 @@ class Project extends Component {
             onOk={this.handleOkEM}
             onCancel={this.handleCancelEM}
           >
-            ami notun modal
+            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+              <Form.Item label="Project Name">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, oldName: e.target.value }});
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="New Name">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, name: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Client">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, client: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Amount">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, amount: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Paid">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, paid: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+            </Form>
           </Modal>
         </div>
         {/* Delete modal */}

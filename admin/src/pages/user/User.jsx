@@ -86,8 +86,7 @@ class User extends Component {
     });
   };
   handleOkEM = async e => {
-    console.log(this.state.editData);
-    await Requests.put('http://localhost:5000/api/users/', {data: this.state.editData});
+    await Requests.put('http://localhost:5000/api/users/', this.state.editData);
     this.setState({
       visibleEM: false,
     });
@@ -131,7 +130,7 @@ class User extends Component {
   async componentWillMount() {
     const res = await Requests.get('http://localhost:5000/api/userlist');
     console.log('res', res);
-    this.setState({ data: res.data.user });
+    if(res.data != undefined) this.setState({ data: res.data.user });
   }
   componentDidMount() {}
   render() {

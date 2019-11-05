@@ -45,8 +45,10 @@ router.post('/', async (req, res)=>{
     // }
 });
 router.put('/', async (req, res)=>{
-    const {name, client, amount, paid} = req.body;
-    project = await UserModel.findOne({email:presentEmail});
+    // console.log('Project edit request', req.body);
+    const {oldName, name, client, amount, paid} = req.body;
+    project = await ProjectModel.findOne({name:oldName});
+    console.log('Project edit request', project);
     if("name" in project){
         project.name = name;
         project.client = client;
@@ -54,14 +56,16 @@ router.put('/', async (req, res)=>{
         project.paid = paid;
         p = await project.save();
     }
-    res.send(project);
+    res.send('Project edit request', project);
+    // res.send(project);
 });
+
 router.delete('/', async (req, res)=>{
-    console.log('Body data', req.body.name)
-    await UserModel.deleteOne({ name: req.body.name}, function (err) {
-        if (err) return handleError(err);
+    await ProjectModel.deleteOne({ name: req.body.name}, function (err) {
+        if (err) return res.send(err);
+        return res.send("Successfully Deleted!");
     });
-    res.send("Successfully Deleted!");
+    
 });
 
 

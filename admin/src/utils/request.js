@@ -31,9 +31,6 @@ class Requests {
     }
   };
   put = async (endPoint, params) => {
-    console.log('Update Request');
-    console.log('Method: Put');
-    console.log('Path: ', endPoint, '\n', 'Params: ', params);
     try {
       const response = await axios.put(endPoint, params); // params to be an object
       console.log('Update response: ', response);
