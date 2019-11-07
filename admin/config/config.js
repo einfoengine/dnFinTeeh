@@ -124,6 +124,12 @@ export default {
               component: './user/User',
             },
             {
+              path: '/clients',
+              name: 'Clients',
+              icon: 'user',
+              component: './Client',
+            },
+            {
               path: '/project',
               name: 'Project',
               icon: 'project',

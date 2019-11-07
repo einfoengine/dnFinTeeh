@@ -26,6 +26,10 @@ router.post('/', async (req, res)=>{
     // res.send('Success');
     // try{
         const {name, client, amount, paid} = req.body;
+        // if(amount == undefined || paid == undefined){
+        //     amount = 0;
+        //     paid = 0;
+        // }
         let project = await ProjectModel.findOne({name : name});
         // res.send(project);
         if(project){
@@ -35,8 +39,9 @@ router.post('/', async (req, res)=>{
             project = new ProjectModel({name, client, amount, paid});
             // res.send(project);
             project.save(function (err) {
-                if (err) res.send(err);
-                res.send("New project saved");
+                if (err) {res.send(err)}else{
+                    res.send("New project saved");
+                };
             });
         }
     // }catch(err){
@@ -45,6 +50,7 @@ router.post('/', async (req, res)=>{
     // }
 });
 router.put('/', async (req, res)=>{
+    // res.send('I am already exicuted');
     const {id, name, client, amount, paid} = req.body;
     console.log('Project edit request', id);
     project = await ProjectModel.findOne({_id:id});

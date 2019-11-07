@@ -2,25 +2,29 @@
 
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import UserReg from '../component/User/reg';
-import Requests from '../../utils/request';
+// import UserReg from '../component/User/reg';
+import Requests from '../utils/request';
 import { Button, Card, Divider, Form, Input, Modal, Table } from 'antd';
 
-class User extends Component {
+class Clients extends Component {
   state = {
     autoCompleteResult: [],
     confirmDirty: false,
     data: [],
     formdata: {
       name: '',
+      phone: '',
       email: '',
-      pass: '',
+      address: '',
+      company: '',
     },
     editData:{
       id: '',
       name: '',
+      phone: '',
       email: '',
-      pass: ''
+      address: '',
+      company: '',
     },
     record: {},
     visible: false,
@@ -36,9 +40,19 @@ class User extends Component {
       render: x => <a>{x}</a>,
     },
     {
+      title: 'Company',
+      dataIndex: 'company',
+      key: 'company',
+    },
+    {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
       title: 'Action',
@@ -49,7 +63,7 @@ class User extends Component {
           <a onClick={(e)=>{
             let editData = this.state.editData;
             this.setState({ 
-              editData: { ...editData, id: record._id, name: record.name, email: record.email, pass: record.pass },
+              editData: { ...editData, id: record._id, name: record.name, address: record.address, company: record.company, email: record.email, phone: record.phone },
               record: record
             });
             console.log(record);
@@ -77,7 +91,7 @@ class User extends Component {
 
   handleOkD = async e => {
     console.log(this.state.record.email);
-    await Requests.delete('http://localhost:5000/api/users/', { data: {"email": this.state.record.email} } );
+    await Requests.delete('http://localhost:5000/api/clients/', { data: {"name": this.state.record.name} } );
     this.setState({
       visibleD: false,
     });
@@ -97,7 +111,7 @@ class User extends Component {
     });
   };
   handleOkEM = async e => {
-    await Requests.put('http://localhost:5000/api/users/', this.state.editData);
+    await Requests.put('http://localhost:5000/api/clients/', this.state.editData);
     this.setState({
       visibleEM: false,
     });
@@ -127,7 +141,7 @@ class User extends Component {
 
   handleOk = async e => {
     console.log(this.state);
-    await Requests.post('http://localhost:5000/api/users', this.state.formdata);
+    await Requests.post('http://localhost:5000/api/clients', this.state.formdata);
     this.setState({
       visible: false,
     });
@@ -149,9 +163,9 @@ class User extends Component {
 
   // Life cycle
   async componentWillMount() {
-    const res = await Requests.get('http://localhost:5000/api/userlist');
+    const res = await Requests.get('http://localhost:5000/api/clients/');
     console.log('res', res);
-    if(res.data != undefined) this.setState({ data: res.data.user });
+    this.setState({data: res.data.clients})
   }
   componentDidMount() {}
   render() {
@@ -169,7 +183,7 @@ class User extends Component {
       <PageHeaderWrapper>
         <Card>
           <Button type="primary" onClick={this.showModal}>
-            Create User
+            Register Client
           </Button>
         </Card>
         <Card>
@@ -178,22 +192,37 @@ class User extends Component {
         <div>
           {/* Modal: Create user */}
           <Modal
-            title="Create User"
+            title="Register Client"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
           >
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-              <Form.Item label="Name">
+            <Form {...formItemLayout}>
+              <Form.Item label="Client Name">
                 <Input
-                  
                   onChange={e => {
                     let imput = this.state.formdata;
                     this.setState({ formdata: { ...imput, name: e.target.value } });
                   }}
                 />
               </Form.Item>
-              <Form.Item label="E-mail">
+              <Form.Item label="Company">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.formdata;
+                    this.setState({ formdata: { ...imput, company: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Phone">
+                <Input
+                  onChange={e => {
+                    let imput = this.state.formdata;
+                    this.setState({ formdata: { ...imput, phone: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Email">
                 <Input
                   onChange={e => {
                     let imput = this.state.formdata;
@@ -201,11 +230,11 @@ class User extends Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="Password">
+              <Form.Item label="Address">
                 <Input
                   onChange={e => {
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, pass: e.target.value } });
+                    this.setState({ formdata: { ...imput, address: e.target.value } });
                   }}
                 />
               </Form.Item>
@@ -213,16 +242,15 @@ class User extends Component {
           </Modal>
         </div>
         {/* Modal Edit User */}
-        <div id="edit-user">
+        <div id="edit-client">
           <Modal
-            title="Edit User"
+            title="Edit Client"
             visible={this.state.visibleEM}
             onOk={this.handleOkEM}
             onCancel={this.handleCancelEM}
           >
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-              
-              <Form.Item label="Name">
+            <Form {...formItemLayout}>
+              <Form.Item label="Client Name">
                 <Input
                   value={this.state.editData.name}
                   onChange={e => {
@@ -231,7 +259,25 @@ class User extends Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="E-mail">
+              <Form.Item label="Company">
+                <Input
+                  value={this.state.editData.company}
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, company: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Phone">
+                <Input
+                  value={this.state.editData.phone}
+                  onChange={e => {
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, phone: e.target.value } });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="Email">
                 <Input
                   value={this.state.editData.email}
                   onChange={e => {
@@ -240,12 +286,12 @@ class User extends Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="Password">
+              <Form.Item label="Address">
                 <Input
-                  value={this.state.editData.pass}
+                  value={this.state.editData.address}
                   onChange={e => {
                     let imput = this.state.editData;
-                    this.setState({ editData: { ...imput, pass: e.target.value } });
+                    this.setState({ editData: { ...imput, address: e.target.value } });
                   }}
                 />
               </Form.Item>
@@ -268,4 +314,4 @@ class User extends Component {
   }
 }
 
-export default User;
+export default Clients;

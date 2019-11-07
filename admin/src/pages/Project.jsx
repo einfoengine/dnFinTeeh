@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Requests from '../utils/request';
-import { Button, Card, Divider, Form, Input, Modal, Table } from 'antd';
+import { Button, Card, Divider, Form, Input, InputNumber, Modal, Table } from 'antd';
+import { number } from 'prop-types';
 
 class Project extends Component {
   state = {
@@ -13,15 +14,15 @@ class Project extends Component {
     formdata: {
       name: '',
       client: '',
-      amount: '',
-      paid: '',
-    },
-    editData: {
-      id: '',
-      name: '',
-      client: '',
       amount: 0,
       paid: 0,
+    },
+    editData: {
+      // id: '',
+      // name: '',
+      // client: '',
+      // amount: 0,
+      // paid: 0,
     },
     record: {},
     visible: false,
@@ -54,9 +55,14 @@ class Project extends Component {
           {/* <a onClick={this.showModalEM}>edit</a> */}
           <a onClick={(e)=>{
             let editData = this.state.editData;
-            this.setState({ editData: { ...editData, id: record._id }});
+            console.log("record",JSON.stringify(record));
+            this.setState({ 
+              editData: { ...editData, id: record._id, name: record.name, client: record.client, amount: record.amount, paid: record.paid},
+              record: record
+            });
+            console.log(record);
+            console.log("this.state.editData",this.state.editData);
             this.showModalEM();
-            this.setState({record});
           }}>Edit</a>
             <Divider type="vertical"/>
           <a onClick={(e)=>{
@@ -84,6 +90,7 @@ class Project extends Component {
     this.setState({
       visibleD: false,
     });
+    this.componentWillMount();
   };
 
   handleCancelD = e => {
@@ -102,10 +109,10 @@ class Project extends Component {
   handleOkEM = async e => {
     this.setState({visibleEM: false});
     await Requests.put('http://localhost:5000/api/projects/', this.state.editData);
+    this.componentWillMount();
   };
 
   handleCancelEM = e => {
-    console.log(e);
     this.setState({
       visibleEM: false,
     });
@@ -121,6 +128,7 @@ class Project extends Component {
   handleOk = async e => {
     console.log(this.state);
     await Requests.post('http://localhost:5000/api/projects', this.state.formdata);
+    this.componentWillMount();
     this.setState({
       visible: false,
     });
@@ -192,18 +200,18 @@ class Project extends Component {
                 />
               </Form.Item>
               <Form.Item label="Amount">
-                <Input
+                <InputNumber
                   onChange={e => {
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, amount: e.target.value } });
+                    this.setState({ formdata: { ...imput, amount: e } });
                   }}
                 />
               </Form.Item>
               <Form.Item label="Paid">
-                <Input
+                <InputNumber
                   onChange={e => {
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, paid: e.target.value } });
+                    this.setState({ formdata: { ...imput, paid: e } });
                   }}
                 />
               </Form.Item>
@@ -221,6 +229,7 @@ class Project extends Component {
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
               <Form.Item label="Project Name">
                 <Input
+                  value={this.state.editData.name}
                   onChange={e => {
                     let imput = this.state.editData;
                     this.setState({ editData: { ...imput, name: e.target.value } });
@@ -229,6 +238,7 @@ class Project extends Component {
               </Form.Item>
               <Form.Item label="Client">
                 <Input
+                  value={this.state.editData.client}
                   onChange={e => {
                     let imput = this.state.editData;
                     this.setState({ editData: { ...imput, client: e.target.value } });
@@ -237,6 +247,7 @@ class Project extends Component {
               </Form.Item>
               <Form.Item label="Amount">
                 <Input
+                  value={this.state.editData.amount}
                   onChange={e => {
                     let imput = this.state.editData;
                     this.setState({ editData: { ...imput, amount: e.target.value } });
@@ -245,6 +256,7 @@ class Project extends Component {
               </Form.Item>
               <Form.Item label="Paid">
                 <Input
+                  value={this.state.editData.paid}
                   onChange={e => {
                     let imput = this.state.editData;
                     this.setState({ editData: { ...imput, paid: e.target.value } });

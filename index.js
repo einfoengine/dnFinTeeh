@@ -26,6 +26,7 @@ app.get('/', (req, res)=>{
 app.use('/api/users', require('./routes/api/users')); // Create new user
 app.use('/api/auth', require('./routes/api/auth')); // Authenticate an user
 app.use('/api/userlist', require('./routes/api/user_list'))
+app.use('/api/clients', require('./routes/api/clients'))
 
 app.use('/api/projects', require('./routes/api/projects'))
 

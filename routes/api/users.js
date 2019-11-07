@@ -83,8 +83,8 @@ router.post('/', [
 router.put('/', async (req, res)=>{
     // console.log('amar data',req.body);
     // res.send('amar data',req.body);
-    const {presentEmail, name, email, pass} = req.body;
-    user = await UserModel.findOne({email:presentEmail});
+    const {id, name, email, pass} = req.body;
+    user = await UserModel.findOne({_id: id});
     if("email" in user){
         user.email = email;
         user.name = name;
