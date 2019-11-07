@@ -3,13 +3,31 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Requests from '../utils/request';
-import { Button, Card, Divider, Form, Input, InputNumber, Modal, Table } from 'antd';
+import { Button, Card, Divider, Form, Input, InputNumber, Modal, Select, Table } from 'antd';
 import { number } from 'prop-types';
+
+const { Option } = Select;
+function onChange(value) {
+  console.log(`selected ${value}`);
+}
+
+function onBlur() {
+  console.log('blur');
+}
+
+function onFocus() {
+  console.log('focus');
+}
+
+function onSearch(val) {
+  console.log('search:', val);
+}
 
 class Project extends Component {
   state = {
     autoCompleteResult: [],
     confirmDirty: false,
+    clients: [],
     data: [],
     formdata: {
       name: '',
@@ -149,8 +167,9 @@ class Project extends Component {
   // Life cycle
   async componentWillMount() {
     const res = await Requests.get('http://localhost:5000/api/projects');
-    console.log('res', res);
+    const clients = await Requests.get('http://localhost:5000/api/clients');
     this.setState({ data: res.data.project });
+    this.setState({ clients: clients.data.clients });
   }
   componentDidMount() {}
   render() {
@@ -167,6 +186,7 @@ class Project extends Component {
     console.log('Edit data', this.state.editData);
     return (
       <PageHeaderWrapper>
+        {console.log('State',this.state.clients)}
         <Card>
           <Button type="primary" onClick={this.showModal}>
             Create Project
@@ -192,13 +212,34 @@ class Project extends Component {
                 />
               </Form.Item>
               <Form.Item label="Client">
-                <Input
-                  onChange={e => {
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={(value)=>{
+                    console.log(value);
                     let imput = this.state.formdata;
-                    this.setState({ formdata: { ...imput, client: e.target.value } });
+                    this.setState({ formdata: { ...imput, client: value } });
                   }}
-                />
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {
+                    this.state.clients.map((clients)=>{
+                      // console.log('item->',clients.name)
+                        return(
+                          <Option value={clients.name}>{clients.name}</Option>
+                        );
+                    })
+                  }
+                </Select>
               </Form.Item>
+
               <Form.Item label="Amount">
                 <InputNumber
                   onChange={e => {
@@ -236,7 +277,7 @@ class Project extends Component {
                   }}
                 />
               </Form.Item>
-              <Form.Item label="Client">
+              {/* <Form.Item label="Client">
                 <Input
                   value={this.state.editData.client}
                   onChange={e => {
@@ -244,6 +285,34 @@ class Project extends Component {
                     this.setState({ editData: { ...imput, client: e.target.value } });
                   }}
                 />
+              </Form.Item> */}
+              <Form.Item label="Client">
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={(value)=>{
+                    console.log(value);
+                    let imput = this.state.editData;
+                    this.setState({ editData: { ...imput, client: value } });
+                  }}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {
+                    this.state.clients.map((clients)=>{
+                      // console.log('item->',clients.name)
+                        return(
+                          <Option value={clients.name}>{clients.name}</Option>
+                        );
+                    })
+                  }
+                </Select>
               </Form.Item>
               <Form.Item label="Amount">
                 <Input

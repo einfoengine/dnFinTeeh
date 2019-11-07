@@ -34,15 +34,15 @@ class Clients extends Component {
 
   columns = [
     {
-      title: 'Name',
-      dataIndex: 'name', 
-      key: 'name',
-      render: x => <a>{x}</a>,
-    },
-    {
       title: 'Company',
       dataIndex: 'company',
       key: 'company',
+    },
+    {
+      title: 'Contact Person',
+      dataIndex: 'name', 
+      key: 'name',
+      render: x => <a>{x}</a>,
     },
     {
       title: 'Email',
@@ -132,13 +132,6 @@ class Clients extends Component {
       visible: true,
     });
   };
-
-  // handleOk = async e => {
-  //   console.log(this.state);
-  //   await Requests.post('http://localhost:5000/api/users/', this.state.formdata);
-  //   let data = this.state.data;
-  // };
-
   handleOk = async e => {
     console.log(this.state);
     await Requests.post('http://localhost:5000/api/clients', this.state.formdata);
@@ -147,7 +140,6 @@ class Clients extends Component {
     });
     this.componentWillMount();
   };
-
   handleCancel = e => {
     console.log(e);
     this.setState({
