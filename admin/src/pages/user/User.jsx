@@ -6,6 +6,8 @@ import UserReg from '../component/User/reg';
 import Requests from '../../utils/request';
 import { Button, Card, Divider, Form, Input, Modal, Table } from 'antd';
 
+// import Highlighter from 'react-highlight-words';
+
 class User extends Component {
   state = {
     autoCompleteResult: [],

@@ -125,7 +125,6 @@ class Project extends Component {
   // Life cycle
   async componentWillMount() {
     const res = await Requests.get('http://localhost:5000/api/userlist');
-    console.log('res', res);
     this.setState({ data: res.data.user });
   }
   componentDidMount() {}

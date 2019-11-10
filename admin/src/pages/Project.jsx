@@ -59,6 +59,7 @@ class Project extends Component {
       title: 'Client',
       dataIndex: 'client',
       key: 'client',
+      render: (i, record) => (record.client.name)
     },
     {
       title: 'Amount',
@@ -186,7 +187,10 @@ class Project extends Component {
     console.log('Edit data', this.state.editData);
     return (
       <PageHeaderWrapper>
-        {console.log('State',this.state.clients)}
+        {
+          console.log('Clients',this.state.clients),
+          console.log('Data', this.state.data)
+        }
         <Card>
           <Button type="primary" onClick={this.showModal}>
             Create Project
@@ -230,10 +234,10 @@ class Project extends Component {
                   }
                 >
                   {
-                    this.state.clients.map((clients)=>{
-                      // console.log('item->',clients.name)
+                    this.state.clients.map((client)=>{
+                      // console.log('item->',client.name)
                         return(
-                          <Option value={clients.name}>{clients.name}</Option>
+                          <Option value={client._id}>{client.name}</Option>
                         );
                     })
                   }
@@ -305,10 +309,10 @@ class Project extends Component {
                   }
                 >
                   {
-                    this.state.clients.map((clients)=>{
-                      // console.log('item->',clients.name)
+                    this.state.clients.map((client)=>{
+                      // console.log('item->',client.name)
                         return(
-                          <Option value={clients.name}>{clients.name}</Option>
+                          <Option value={client._id}>{client.name}</Option>
                         );
                     })
                   }
