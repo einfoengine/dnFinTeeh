@@ -1,12 +1,11 @@
 // The root of all persicuation
 
 import React, { Component } from 'react';
-import { PageHeaderWrapper, Pie } from '@ant-design/pro-layout';
+import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import Requests from '../utils/request';
-import { Button, Card, Divider, Form, Input, Icon, InputNumber, Modal, Select, Table, Progress } from 'antd';
+import { Button, Card, Col, Divider, Form, Input, Icon, InputNumber, Modal, Row, Select, Statistic, Table } from 'antd';
 import { number } from 'prop-types';
 import Highlighter from 'react-highlight-words';
-// import { Pie } from 'ant-design-pro/lib/Charts';
 
 const { Option } = Select;
 function onChange(value) {
@@ -25,7 +24,7 @@ function onSearch(val) {
   console.log('search:', val);
 }
 
-class Project extends Component {
+class Transaction extends Component {
   state = {
     autoCompleteResult: [],
     confirmDirty: false,
@@ -113,13 +112,14 @@ class Project extends Component {
     this.setState({ searchText: '' });
   };
 
+  // Table columns
   columns = [
     {
-      title: 'Name',
-      dataIndex: 'name', 
-      key: 'name',
+      title: 'Date',
+      dataIndex: 'date', 
+      key: 'date',
       render: x => <a>{x}</a>,
-      ...this.getColumnSearchProps('name'),
+      // ...this.getColumnSearchProps('name'),
     },
     {
       title: 'Client',
@@ -129,19 +129,20 @@ class Project extends Component {
       // ...this.getColumnSearchProps('client'),
     },
     {
-      title: 'Budget',
+      title: 'Project',
+      dataIndex: 'project',
+      key: 'project',
+      // render: (i, record) => <a>{i.name}</a>,
+      // ...this.getColumnSearchProps('client'),
+    },
+    {
+      title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
     },
     {
-      title: 'Paid',
-      dataIndex: 'paid',
-      key: 'paid',
-      render: ()=> <Progress type="circle" percent={30} width={30} />
-    },
-    {
-      title: 'Action',
-      key: 'action',
+      title: 'Cancle',
+      key: 'calcle',
       render: (text, record) => (
         <span>
           {/* <a onClick={this.showModalEM}>edit</a> */}
@@ -155,14 +156,7 @@ class Project extends Component {
             console.log(record);
             console.log("this.state.editData",this.state.editData);
             this.showModalEM();
-          }}>Edit</a>
-            <Divider type="vertical"/>
-          <a onClick={(e)=>{
-            this.showModalD();
-            console.log(record)
-            console.log(this.state.record);
-            this.setState({record});
-          }}>Delete</a>
+          }}>Request Cancle</a>
         </span>
       ),
     },
@@ -264,6 +258,7 @@ class Project extends Component {
       },
     };
     console.log('Edit data', this.state.editData);
+    
     return (
       <PageHeaderWrapper>
         {
@@ -271,9 +266,24 @@ class Project extends Component {
           console.log('Data', this.state.data)
         }
         <Card>
-          <Button type="primary" onClick={this.showModal}>
-            Create Project
-          </Button>
+          {/* <Divider type="vertical"/>
+          <span>Received: 1900 BDT</span>
+          <Divider type="vertical"/>
+          <span>Receivable: 1900 BDT</span>
+        */}
+          <Row gutter={16}>
+            <Col span={16}>
+              <Button type="primary" onClick={this.showModal}>
+                New Transaction
+              </Button>
+            </Col>
+            <Col span={4}>
+              <Statistic title="Received" value={1128} />
+            </Col>
+            <Col span={4}>
+              <Statistic title="Receivable" value={93}/>
+            </Col>
+          </Row>
         </Card>
         <Card>
           <Table columns={this.columns} dataSource={this.state.data} pagination={false} />
@@ -434,4 +444,4 @@ class Project extends Component {
   }
 }
 
-export default Project;
+export default Transaction;

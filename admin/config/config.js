@@ -136,6 +136,12 @@ export default {
               component: './Project',
             },
             {
+              path: '/transaction',
+              name: 'Transaction',
+              icon: 'money-collect',
+              component: './Transaction',
+            },
+            {
               component: './404',
             },
           ],
