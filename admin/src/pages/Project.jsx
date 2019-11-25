@@ -242,7 +242,7 @@ class Project extends Component {
   async componentWillMount() {
     const res = await Requests.get('http://localhost:5000/api/projects');
     const clients = await Requests.get('http://localhost:5000/api/clients');
-    this.setState({ data: res.data.project });
+    this.setState({ data: res.data.projects });
     this.setState({ clients: clients.data.clients });
   }
   componentDidMount() {}
@@ -267,8 +267,8 @@ class Project extends Component {
     return (
       <PageHeaderWrapper>
         {
-          console.log('Clients',this.state.clients),
-          console.log('Data', this.state.data)
+          console.log('************ Clients',this.state.clients),
+          console.log('************ Data', this.state)
         }
         <Card>
           <Button type="primary" onClick={this.showModal}>
