@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const config = require('config');
-const gravatar = require('gravatar');
+// const gravatar = require('gravatar');
 const db = config.get("mongoURI"); 
 
 // Connect mongo DB

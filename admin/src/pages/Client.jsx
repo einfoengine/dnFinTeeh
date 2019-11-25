@@ -80,7 +80,7 @@ class Clients extends Component {
         highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
         searchWords={[this.state.searchText]}
         autoEscape
-        textToHighlight={text.toString()}
+        // textToHighlight={text.toString()}
       />
     ),
   });
@@ -101,26 +101,26 @@ class Clients extends Component {
       title: 'Company',
       dataIndex: 'company',
       key: 'company',
-      ...this.getColumnSearchProps('company'),
+      // ...this.getColumnSearchProps('company'),
     },
     {
       title: 'Contact Person',
       dataIndex: 'name', 
       key: 'name',
       render: x => <a>{x}</a>,
-      ...this.getColumnSearchProps('name'),
+      // ...this.getColumnSearchProps('name'),
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      ...this.getColumnSearchProps('email'),
+      // ...this.getColumnSearchProps('email'),
     },
     {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
-      ...this.getColumnSearchProps('address'),
+      // ...this.getColumnSearchProps('address'),
     },
     {
       title: 'Projects',
@@ -143,10 +143,10 @@ class Clients extends Component {
           <a onClick={(e)=>{
             let editData = this.state.editData;
             this.setState({ 
-              editData: { ...editData, id: record._id, name: record.name, address: record.address, company: record.company, email: record.email, phone: record.phone },
+              editData: { ...editData, id: record.id, name: record.name, address: record.address, company: record.company, email: record.email, phone: record.phone },
               record: record
             });
-            console.log(record);
+            // console.log('******** Record: ',record);
             this.showModalEM();
           }}>Edit</a>
             <Divider type="vertical"/>
@@ -236,7 +236,7 @@ class Clients extends Component {
   // Life cycle
   async componentWillMount() {
     const res = await Requests.get('http://localhost:5000/api/clients/');
-    console.log('res', res);
+    console.log('All clients data \n **************** \n', res.data.clients);
     this.setState({data: res.data.clients})
   }
   componentDidMount() {}
@@ -253,6 +253,7 @@ class Clients extends Component {
     };
     return (
       <PageHeaderWrapper>
+        {console.log('Table data to load \n', this.state.data)}
         <Card>
           <Button type="primary" onClick={this.showModal}>
             Register Client
@@ -262,7 +263,7 @@ class Clients extends Component {
           <Table columns={this.columns} dataSource={this.state.data} pagination={false} />
         </Card>
         <div>
-          {/* Modal: Create user */}
+          {/* Modal: Register Client */}
           <Modal
             title="Register Client"
             visible={this.state.visible}

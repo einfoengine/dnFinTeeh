@@ -1,67 +1,25 @@
-const mongoose = require('mongoose');
+const Sequelize = require('sequelize');
+const db = require('../config/sequelize');
 
-const ProjectSchema = new mongoose.Schema({
+const ProjectSchema = db.define('Projects',{
     name: {
-        type: String,
+        type: Sequelize.STRING,
         required: true
     },
-    // client: {
-    //     type: String,
-    //     require: true,
-    // },
-    // client_id:{ 
-    //     type: mongoose.Schema.Types.ObjectId, 
-    //     ref: 'Clients' 
-    // },
-    client:{
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Client'
+    client: {
+        type: Sequelize.INTEGER,
+        require: true,
     },
     amount: {
-        type: Number,
-        required: true, 
+        type: Sequelize.STRING,
     },
     paid: {
-        type: Number, 
-        required: true,
+        type: Sequelize.STRING,
     },
-    date: {
-        type: Date,
-        default: Date.now
-    }
+    // company: {
+    //     type: Sequelize.STRING,
+    //     // type: String,
+    // },
 });
 
-module.exports = Project = mongoose.model('Project', ProjectSchema);
-
-
-// ***************
-
-
-// import Clients from './Clients';
-// const mongoose = require('mongoose');
-
-// const ProjectSchema = new mongoose.Schema({
-//     name: {
-//         type: String,
-//         required: true
-//     },
-//     client: [{
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Clients',
-//         require: true,
-//     }],
-//     amount: {
-//         type: Number,
-//         required: true, 
-//     },
-//     paid: {
-//         type: Number, 
-//         required: true,
-//     },
-//     date: {
-//         type: Date,
-//         default: Date.now
-//     }
-// });
-
-// module.exports = Projects = mongoose.model('project', ProjectSchema);
+module.exports = ProjectSchema;

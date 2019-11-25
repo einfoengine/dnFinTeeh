@@ -1,28 +1,30 @@
-const mongoose = require('mongoose');
+const Sequelize = require('sequelize');
+const db = require('../config/sequelize');
 
-const ClientSchema = new mongoose.Schema({
+const ClientSchema = db.define('Client',{
     name: {
-        type: String,
+        type: Sequelize.STRING,
         required: true
     },
     phone: {
-        type: Number,
+        type: Sequelize.INTEGER,
         require: true,
     },
     email: {
-        type: String,
+        type: Sequelize.STRING,
     },
     address: {
-        type: String,
-        require: true,
+        type: Sequelize.STRING,
+        // require: true,
     },
     company: {
-        type: String,
+        type: Sequelize.STRING,
+        // type: String,
     },
-    date: {
-        type: Date,
-        default: Date.now
-    }
+    // date: {
+    //     type: Date,
+    //     default: Date.now
+    // }
 });
 
-module.exports = Client = mongoose.model('Client', ClientSchema);
+module.exports = ClientSchema;

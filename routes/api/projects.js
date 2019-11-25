@@ -1,82 +1,93 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../../config/sequelize');
+const Projects = require('../../models/Projects');
+Projects.sync();
 
-
-const Client = require('../../models/Clients');
-const Project = require('../../models/Projects');
-// require("../../models/Projects");
-
+// Routes
+// =========
 router.get('/test', (req, res)=>{
-    res.send('I am called at users');
+    res.send('I am called at projects test');
 });
-router.get('/', async(req, res)=>{
-    // console.log("-=-=-=-=-=-=-=-=-=-=-=-=-req.params",req.params)
+router.get('/', async (req, res)=>{
     try{
-        const project = await Project.find({}).populate("client");
-        // const project = await Projects.find({}).populate("client");
-        console.log("project===================",project);
-        res.json({project})
+        const projects = await Projects.findAll();
+        if(projects){
+            console.log(process);
+            res.send({projects});
+        }else{
+            console.log('No projects found');
+        }
     }catch(err){
-        console.log("err.message",err.message);
-        res.json(err.message);
+        res.status(500).json({message: 'Error:',err:err});
     }
-});
-
-// router.get('/projects', async (req, res)=>{
-//     let projects = await ProjectModel.findAll();
-//     res.send(projects);
-// });
+})
 
 router.post('/', async (req, res)=>{
-    // res.send('Success');
-    // try{
-        // const {name, client, amount, paid} = req.body;
-        
-        let project = await Project.findOne({name : req.body.name});
+    const {name, client, amount, paid} = req.body;
+    try{
+        let project = await Projects.findOne({where: {name: name}});
         if(project){
-            res.send("Project is already there!");
+            res.send({
+                request: name,
+                status: 'Project already exist!',
+                project: project
+            })
         }else{
-            project = new ProjectModel(req.body);
-            // project = new ProjectModel({name, client, amount, paid});
-            // res.send(project);
-            project.save(function (err,data) {
-                if (err) {res.send(err)}else{
-                    console.log("data",data);
-                    res.send("New project saved");
-                };
+            const project = await Projects.build({
+                "name": name,
+                "client": client,
+                "amount": amount,
+                "paid": paid,
+            });
+            const save = await project.save();
+            if(save){
+                res.send({
+                    request: name,
+                    status: 'Project create requested successfully'
+                })
+            }else{
+                res.send('Something went wrong');
+            }
+        }
+    }catch(err){
+        res.status(500).json(err);
+    }
+    console.log('*********** Project api ********')
+    console.log(req.body);
+    // res.send(req.body);
+    console.log('*********** Project api ********')
+});
+
+router.put('/', async (req, res)=>{
+    const {id, name, phone, email, address, company} = req.body;
+    let project = await Projects.findOne({where: {id:id}});
+    try{
+        if(project){
+            project.update({
+                name : name,
+                phone : phone,
+                email : email,
+                address : address,
+                company : company,
             });
         }
-    // }catch(err){
-    //     console.error(err.message);
-    //     res.status(500).send(err.message);
-    // }
-});
-router.put('/', async (req, res)=>{
-    // res.send('I am already exicuted');
-    const {id, name, client, amount, paid} = req.body;
-    console.log('Project edit request', id);
-    project = await Project.findOne({_id:id});
-    // console.log('Project edit request', project);
-    if("name" in project){
-        project.name = name;
-        project.client = client;
-        project.amount = amount;
-        project.paid = paid;
-        p = await project.save();
+    }catch(err){
+        res.json({err});
     }
-    res.send(project);
-    // res.send(req.body);
+    console.log('*****************');
+    console.log('I am put request');
+    console.log(projects);
+    res.send(projects);
+    console.log('*****************');
 });
 
 router.delete('/', async (req, res)=>{
-    await Project.deleteOne({ name: req.body.name}, function (err) {
-        if (err) return res.send(err);
-        return res.send("Successfully Deleted!");
-    });
-    
+    const {name} = req.body;
+    let projects = await Projects.findOne({where: {name: name}});
+    projects.destroy();
+    res.send('Projects destroy request exicuted');
 });
-
-
 
 
 module.exports = router;

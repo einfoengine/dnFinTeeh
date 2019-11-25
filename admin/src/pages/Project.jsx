@@ -301,7 +301,7 @@ class Project extends Component {
                   placeholder="Select a person"
                   optionFilterProp="children"
                   onChange={(value)=>{
-                    console.log(value);
+                    console.log('Selected value: ',value);
                     let imput = this.state.formdata;
                     this.setState({ formdata: { ...imput, client: value } });
                   }}
@@ -316,7 +316,7 @@ class Project extends Component {
                     this.state.clients.map((client)=>{
                       // console.log('item->',client.name)
                         return(
-                          <Option value={client._id}>{client.name}</Option>
+                          <Option value={client.id}>{client.name}</Option>
                         );
                     })
                   }

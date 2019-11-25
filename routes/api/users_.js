@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 
-const UserModel = require('../../models/Users');
+const UserModel = require('../../models/Users_');
 
 router.get('/test', (req, res)=>{
     res.send('I am called at users');
