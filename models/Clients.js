@@ -2,6 +2,12 @@ const Sequelize = require('sequelize');
 const db = require('../config/sequelize');
 
 const ClientSchema = db.define('Client',{
+    // id: {
+    //     // type: DataTypes.UUID,
+    //     primaryKey: true,
+    //     // defaultValue: DataTypes.UUIDV4,
+    //     allowNull: false
+    // },
     name: {
         type: Sequelize.STRING,
         required: true

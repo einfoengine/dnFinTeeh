@@ -121,13 +121,13 @@ class Transaction extends Component {
       render: x => <a>{x}</a>,
       // ...this.getColumnSearchProps('name'),
     },
-    {
-      title: 'Client',
-      dataIndex: 'client',
-      key: 'client',
-      render: (i, record) => <a>{i.name}</a>,
-      // ...this.getColumnSearchProps('client'),
-    },
+    // {
+    //   title: 'Client',
+    //   dataIndex: 'client',
+    //   key: 'client',
+    //   render: (i, record) => <a>{i.name}</a>,
+    //   // ...this.getColumnSearchProps('client'),
+    // },
     {
       title: 'Project',
       dataIndex: 'project',
@@ -136,30 +136,35 @@ class Transaction extends Component {
       // ...this.getColumnSearchProps('client'),
     },
     {
+      title: 'Operation',
+      dataIndex: 'operation',
+      key: 'operation',
+    },
+    {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
     },
-    {
-      title: 'Cancle',
-      key: 'calcle',
-      render: (text, record) => (
-        <span>
-          {/* <a onClick={this.showModalEM}>edit</a> */}
-          <a onClick={(e)=>{
-            let editData = this.state.editData;
-            console.log("record",JSON.stringify(record));
-            this.setState({ 
-              editData: { ...editData, id: record._id, name: record.name, client: record.client, amount: record.amount, paid: record.paid},
-              record: record
-            });
-            console.log(record);
-            console.log("this.state.editData",this.state.editData);
-            this.showModalEM();
-          }}>Request Cancle</a>
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Cancle',
+    //   key: 'calcle',
+    //   render: (text, record) => (
+    //     <span>
+    //       {/* <a onClick={this.showModalEM}>edit</a> */}
+    //       <a onClick={(e)=>{
+    //         let editData = this.state.editData;
+    //         console.log("record",JSON.stringify(record));
+    //         this.setState({ 
+    //           editData: { ...editData, id: record._id, name: record.name, client: record.client, amount: record.amount, paid: record.paid},
+    //           record: record
+    //         });
+    //         console.log(record);
+    //         console.log("this.state.editData",this.state.editData);
+    //         this.showModalEM();
+    //       }}>Request Cancle</a>
+    //     </span>
+    //   ),
+    // },
   ];
   
   // Modal handler callback

@@ -125,7 +125,7 @@ class Project extends Component {
       title: 'Client',
       dataIndex: 'client',
       key: 'client',
-      render: (i, record) => <a>{i.name}</a>,
+      render: (i, record) => <a>{JSON.stringify(i)}</a>,
       // ...this.getColumnSearchProps('client'),
     },
     {
@@ -149,11 +149,11 @@ class Project extends Component {
             let editData = this.state.editData;
             console.log("record",JSON.stringify(record));
             this.setState({ 
-              editData: { ...editData, id: record._id, name: record.name, client: record.client, amount: record.amount, paid: record.paid},
+              editData: { ...editData, id: record.id, name: record.name, client: record.client, amount: record.amount, paid: record.paid},
               record: record
             });
-            console.log(record);
-            console.log("this.state.editData",this.state.editData);
+            console.log("Record ",record);
+            console.log("this.state.editData", this.state.editData);
             this.showModalEM();
           }}>Edit</a>
             <Divider type="vertical"/>

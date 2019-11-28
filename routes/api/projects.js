@@ -2,16 +2,21 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../config/sequelize');
 const Projects = require('../../models/Projects');
+const Clients = require('../../models/Clients');
+
+Clients.hasMany(Projects);
+Projects.belongsTo(Clients);
+Clients.sync();
 Projects.sync();
 
-// Routes
+// Routes 
 // =========
 router.get('/test', (req, res)=>{
     res.send('I am called at projects test');
 });
 router.get('/', async (req, res)=>{
     try{
-        const projects = await Projects.findAll();
+        const projects = await Projects.findAll({ include: [ Clients ]});
         if(projects){
             console.log(process);
             res.send({projects});
@@ -36,7 +41,7 @@ router.post('/', async (req, res)=>{
         }else{
             const project = await Projects.build({
                 "name": name,
-                "client": client,
+                "ClientId": client,
                 "amount": amount,
                 "paid": paid,
             });
@@ -60,30 +65,26 @@ router.post('/', async (req, res)=>{
 });
 
 router.put('/', async (req, res)=>{
-    const {id, name, phone, email, address, company} = req.body;
+    const {id, name, client, amount, paid} = req.body;
     let project = await Projects.findOne({where: {id:id}});
     try{
         if(project){
             project.update({
                 name : name,
-                phone : phone,
-                email : email,
-                address : address,
-                company : company,
+                client : client,
+                amount : amount,
+                paid : paid
             });
         }
     }catch(err){
         res.json({err});
     }
-    console.log('*****************');
-    console.log('I am put request');
-    console.log(projects);
-    res.send(projects);
-    console.log('*****************');
+    res.send({message: 'Project found', project : project});
+    console.log('Project found', project);
 });
 
 router.delete('/', async (req, res)=>{
-    const {name} = req.body;
+    const {name} = req.body; 
     let projects = await Projects.findOne({where: {name: name}});
     projects.destroy();
     res.send('Projects destroy request exicuted');
